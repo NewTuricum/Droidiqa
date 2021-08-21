@@ -71,12 +71,12 @@ In order to send ZRC2-tokens, you must call the smart contract transition interf
     val tokenTransferTransition = ZRC2TokenTransfer(<receiverAddress>, <amount>)
 And then pass this transition object into droidiqa's smart contract caller:
 
-    droidiqa.callSmartContractTransition(<tokenContractAddress>, <gasPrice>, tokenTransferTransition, callback: TransactionCallback?)
+    droidiqa.callSmartContractTransition(<tokenContractAddress>, <gasPrice>, tokenTransferTransition, callback: TransitionCallback?)
 
 **Transferring Zilliqa tokens**
 For a simple Zilliqa-token transfer you may use the convenience method sendZilliqa:
 
-    droidiqa.sendZilliqa(<amount>, <receiverAddress>, <gasPrice>, callback: TransactionCallback?)
+    droidiqa.sendZilliqa(<amount>, <receiverAddress>, <gasPrice>, callback: TransitionCallback?)
 This will transfer the given amount of Zilliqa tokens from the wallet's active account to the receiver address.
 
 **Smart contract transitions**
