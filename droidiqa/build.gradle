@@ -2,6 +2,7 @@ plugins {
     id 'com.android.library'
     id 'kotlin-android'
     id 'kotlin-kapt'
+    id 'org.jetbrains.dokka'
     id 'maven-publish'
 }
 
@@ -43,6 +44,21 @@ android {
     }
 }
 
+dokkaJavadoc.configure {
+    dokkaSourceSets {
+        named("main") {
+            noAndroidSdkLink.set(false)
+            suppressInheritedMembers.set(false)
+        }
+    }
+    outputDirectory.set(new File("$buildDir/javadoc"))
+}
+
+task androidJavadocJar(type: Jar, dependsOn: dokkaJavadoc) {
+    archiveClassifier.set("javadoc")
+    from("$buildDir/javadoc")
+}
+
 afterEvaluate {
     publishing {
         publications {
@@ -50,15 +66,18 @@ afterEvaluate {
                 from components.release
                 groupId = 'ch.newturicum.libraries'
                 version = droidiqaVersion
+                artifact(tasks.getByName("androidJavadocJar"))
             }
             debug(MavenPublication) {
                 from components.debug
                 groupId = 'ch.newturicum.libraries'
                 version = droidiqaVersion + "-debug"
+                artifact(tasks.getByName("androidJavadocJar"))
             }
         }
     }
 }
+
 
 dependencies {
     def room_version = "2.3.0"
