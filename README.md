@@ -1,5 +1,4 @@
-# Droidiqa
-**A Zilliqa library for Android**
+# Droidiqa - A Zilliqa library for Android
 
 Droidiqa is an Android wrapper around Zilliqa's firestack library and comes with several improvements:
 - Resolves SpongyCastle key generation issues on higher Android SDKs

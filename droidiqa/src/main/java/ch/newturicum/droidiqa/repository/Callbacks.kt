@@ -19,7 +19,7 @@ interface AddTokenCallback : DroidiqaCallback {
     fun onSuccess(token: ZilToken)
 }
 
-interface TransactionCallback : DroidiqaCallback {
+interface TransitionCallback : DroidiqaCallback {
     fun onSuccess(transaction: ZilTransaction)
 }
 

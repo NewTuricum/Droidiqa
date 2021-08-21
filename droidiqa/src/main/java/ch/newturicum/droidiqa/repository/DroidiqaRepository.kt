@@ -244,7 +244,7 @@ interface DroidiqaRepository {
         amount: Double,
         receiverAddress: String,
         gasPrice: Long,
-        callback: TransactionCallback?
+        callback: TransitionCallback?
     )
 
     /**
@@ -258,7 +258,7 @@ interface DroidiqaRepository {
         contractAddress: String,
         gasPrice: Long,
         transition: Transition,
-        callback: TransactionCallback?
+        callback: TransitionCallback?
     )
 
     /**

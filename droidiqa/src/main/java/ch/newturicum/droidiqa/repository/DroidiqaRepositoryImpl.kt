@@ -368,7 +368,7 @@ abstract class DroidiqaRepositoryImpl(
         amount: Double,
         receiverAddress: String,
         gasPrice: Long,
-        callback: TransactionCallback?
+        callback: TransitionCallback?
     ) {
         refreshActiveAccount(object : RefreshCallback {
             override fun onComplete(success: Boolean) {
@@ -389,7 +389,7 @@ abstract class DroidiqaRepositoryImpl(
         contractAddress: String,
         gasPrice: Long,
         transition: Transition,
-        callback: TransactionCallback?
+        callback: TransitionCallback?
     ) {
         refreshActiveAccount(object : RefreshCallback {
             override fun onComplete(success: Boolean) {
@@ -410,7 +410,7 @@ abstract class DroidiqaRepositoryImpl(
         amount: Double,
         receiverAddress: String,
         gasPrice: Long,
-        callback: TransactionCallback?
+        callback: TransitionCallback?
     ) {
         val entity = currentWalletEntity()
         entity?.activeAccount()?.let { account ->
@@ -448,7 +448,7 @@ abstract class DroidiqaRepositoryImpl(
         contractAddress: String,
         gasPrice: Long,
         transition: Transition,
-        callback: TransactionCallback?
+        callback: TransitionCallback?
     ) {
         val entity = currentWalletEntity()
         entity?.activeAccount()?.let { account ->
