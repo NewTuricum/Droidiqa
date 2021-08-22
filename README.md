@@ -116,7 +116,7 @@ This will transfer the given amount of Zilliqa tokens from the wallet's active a
 As discussed above under "transferring ZRC2-tokens", you must provide a Transition-object to Droidiqa's callSmartContractTransition-method. The Transition-class is open and can be extended as necessary. It also provides convenience methods to handle transition parameters.
 
 # Acknowledgements
-This project is based on [Firestack's Laska library](https://github.com/FireStack-Lab/Laksa). 
+This project is based on [Firestack's Laksa library](https://github.com/FireStack-Lab/Laksa). 
 
 # License
 This library is released for free use under the GNU General Public License, v3
