@@ -8,6 +8,14 @@ plugins {
 
 def droidiqaVersion = "0.8.1"
 
+def gitHubCredentials = rootProject.file("github.properties")
+if (gitHubCredentials.exists()) {
+    apply from: gitHubCredentials
+} else {
+    ext.githubUser = "unknown"
+    ext.githubKey = "unknown"
+}
+
 android {
     compileSdkVersion 31
     buildToolsVersion "31.0.0"
@@ -74,6 +82,17 @@ afterEvaluate {
                 groupId = 'ch.newturicum.libraries'
                 version = droidiqaVersion + "-debug"
                 artifact(tasks.getByName("androidJavadocJar"))
+            }
+        }
+
+        repositories {
+            maven {
+                name = "GitHubPackages"
+                url = uri("https://maven.pkg.github.com/NewTuricum/Droidiqa")
+                credentials {
+                    username = githubUser
+                    password = githubKey
+                }
             }
         }
     }
