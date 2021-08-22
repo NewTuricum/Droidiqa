@@ -1,6 +1,6 @@
 # Droidiqa - A Zilliqa library for Android
 
-Droidiqa is an Android wrapper around Zilliqa's firestack library and comes with several improvements:
+Droidiqa is an unofficial Android wrapper around Firestack's Laksa Zilliqa-library and comes with several OS-specific features:
 - Resolves SpongyCastle key generation issues on higher Android SDKs
 - Maintains its own room database
 - Lifecycle awareness
@@ -8,7 +8,7 @@ Droidiqa is an Android wrapper around Zilliqa's firestack library and comes with
 - Secure key storage
 - Contacts database
 
-# Current state of the library
+# Current state of the library - Warning
 
 Right now I consider this library to be in a beta-phase and by no means ready or even perfect. This is strictly a hobby project of mine, please keep this in mind as you're using Droidiqa. **Use this code at your own risk!**
 There is still a lot of streamlining and optimizing work to do here. I'm also aware of the issues all those co-dependencies might cause, especially AndroidX, Volley and Room. Right now I'm planning on getting rid of those via some form of interface, but this may take some more thinking on my part. As of now, if you have any feedback or want to contribute in the development of this project, please feel free to drop me a few lines at contact@newturicumworks.ch
