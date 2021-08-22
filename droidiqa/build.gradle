@@ -6,7 +6,7 @@ plugins {
     id 'maven-publish'
 }
 
-def droidiqaVersion = "0.8.0"
+def droidiqaVersion = "0.8.1"
 
 android {
     compileSdkVersion 31
@@ -48,6 +48,7 @@ dokkaJavadoc.configure {
     dokkaSourceSets {
         named("main") {
             noAndroidSdkLink.set(false)
+            includeNonPublics.set(false)
             suppressInheritedMembers.set(false)
         }
     }

@@ -8,7 +8,7 @@ import ch.newturicum.droidiqa.dto.response.ZilSmartContractInit
 import ch.newturicum.droidiqa.network.ZilNetwork
 import ch.newturicum.droidiqa.transitions.Transition
 
-interface DroidiqaRepository {
+public interface DroidiqaRepository {
 
     /**
      * Set the network to be used. Will automatically switch the current wallet accordingly.
@@ -19,13 +19,13 @@ interface DroidiqaRepository {
     /**
      * Set delay for automatic transaction status refresh calls. This will only be executed while
      * pending transactions are present. Default is disabled.
-     * @param delayMs The delay in between refresh calls in milliseconds. Values below 1000ms will be ignored. A value of 0 disables automatic refreshes.
+     * @param delayMs The delay in between refresh calls in milliseconds, values below 1000ms will be ignored and a value of 0 disables automatic refreshes.
      */
     fun setTransactionRefreshInterval(delayMs: Long = Constants.DEFAULT_TRANSACTION_REFRESH_INTERVAL)
 
     /**
      * Set delay for automatic account balance refresh calls. Default is disabled.
-     * @param delayMs The delay in between refresh calls in milliseconds. Values below 3000ms will be ignored. A value of 0 disables automatic refreshes.
+     * @param delayMs The delay in between refresh calls in milliseconds, values below 3000ms will be ignored and a value of 0 disables automatic refreshes.
      */
     fun setBalanceRefreshInterval(delayMs: Long = Constants.DEFAULT_BALANCE_REFRESH_INTERVAL)
 
@@ -61,40 +61,41 @@ interface DroidiqaRepository {
 
     /**
      * Set the active account within the current wallet.
-     * @return <code>true</code> if the account was set successfully, <code>false</code> else.
+     * @return true if the account was set successfully, false else.
      */
     fun setActiveAccount(account: ZilAccount): Boolean
 
     /**
+     * Get the number of accounts within the active wallet.
      * @return The number of accounts in the currently selected wallet.
      */
     fun getAccountCount(): Int
 
     /**
      * Get the last known minimum gas price in Qa denomination.
-     * @return The last known minimum gas price in Qa. Defaults to 0.
+     * @return The last known minimum gas price in Qa, defaults to 0.
      */
     fun getMinGasPriceQa(): Long
 
     /**
      * Get the last known minimum gas price in Zil denomination.
-     * @return The last known minimum gas price in Zil. Defaults to 0.0
+     * @return The last known minimum gas price in Zil, defaults to 0.0
      */
     fun getMinGasPriceZil(): Double
 
     /**
      * Add a token to the current wallet.
      * @param token The token to add.
-     * @return <code>true</code> if the token was added successfully or is already present within the
-     * wallet. <code>false</code> otherwise.
+     * @return true if the token was added successfully or is already present within the
+     * wallet, false otherwise.
      */
     fun addToken(token: ZilToken): Boolean
 
     /**
      * Add a token to the current wallet.
      * @param smartContractInit The SmartContractInit object describing the token to add.
-     * @return <code>true</code> if the token was added successfully or is already present within the
-     * wallet. <code>false</code> otherwise.
+     * @return true if the token was added successfully or is already present within the
+     * wallet, false otherwise.
      */
     fun addToken(smartContractInit: ZilSmartContractInit): Boolean
 
@@ -120,15 +121,15 @@ interface DroidiqaRepository {
 
     /**
      * Create a new account and add it to the current wallet.
-     * @param name Optional. A human readable denominator for the new account.
-     * @return The newly created account or <code>null</code> if an error occurred.
+     * @param name Optional - A human readable denominator for the new account.
+     * @return The newly created account or null if an error occurred.
      */
     fun createAccount(name: String? = null): ZilAccount?
 
     /**
      * Add a new account to the current wallet.
      * @param privateKey The account's private key.
-     * @param name Optional. A human readable denominator of the account.
+     * @param name Optional - A human readable denominator of the account.
      */
     fun addAccount(privateKey: String, name: String? = null): Boolean
 
@@ -153,19 +154,19 @@ interface DroidiqaRepository {
 
     /**
      * Triggers an async refresh of the current wallet's active account from the Zilliqa blockchain.
-     * @param callback Optional. Callback triggered once the account's stats were updated from the Zilliqa blockchain.
+     * @param callback Optional - Callback triggered once the account's stats were updated from the Zilliqa blockchain.
      */
     fun refreshActiveAccount(callback: RefreshCallback? = null)
 
     /**
      * Triggers an async refresh of the current minimum gas price from the Zilliqa blockchain.
-     * @param callback Optional. A receiver callback for results / errors.
+     * @param callback Optional - A receiver callback for results / errors.
      */
     fun refreshMinimumGasPrice(callback: MinimumGasPriceCallback? = null)
 
     /**
      * Add a new contact to the database.
-     * @param zilContact The contact to add. Existing contact of identical address will be replaced.
+     * @param zilContact The contact to add, existing contact of identical address will be replaced.
      */
     fun addContact(zilContact: ZilContact)
 
@@ -210,7 +211,7 @@ interface DroidiqaRepository {
 
     /**
      * Add a transaction to the local database.
-     * @param transaction The transaction to add. If the hash is already known, this does nothing.
+     * @param transaction The transaction to add - If the hash is already known, this does nothing.
      */
     fun addTransaction(transaction: ZilTransaction)
 
@@ -229,7 +230,7 @@ interface DroidiqaRepository {
 
     /**
      * Trigger a refresh of all pending transaction stati.
-     * @param callback Optional. A callback to be notified once the refresh is finished.
+     * @param callback Optional - A callback to be notified once the refresh is finished.
      */
     fun refreshPendingTransactions(callback: RefreshCallback? = null)
 
@@ -238,7 +239,7 @@ interface DroidiqaRepository {
      * @param amount The amount to send in Zil-denomination.
      * @param receiverAddress The target address where the Zilliqa tokens will be sent to.
      * @param gasPrice The gas price to use for the transaction.
-     * @param callback Optional. A callback receiving the result or errors.
+     * @param callback Optional - A callback receiving the result or errors.
      */
     fun sendZilliqa(
         amount: Double,
@@ -252,7 +253,7 @@ interface DroidiqaRepository {
      * @param contractAddress The smart contract's address.
      * @param gasPrice The gas price to use for the transaction.
      * @param transition The transition with the contract to call.
-     * @param callback Optional. A callback receiving the result or errors.
+     * @param callback Optional - A callback receiving the result or errors.
      */
     fun callSmartContractTransition(
         contractAddress: String,
