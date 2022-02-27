@@ -1,0 +1,13 @@
+[versions]
+kotlin="1.6.10"
+android-gradle="7.2.2-beta"
+dokka="1.5.0"
+
+[libraries]
+
+[plugins]
+android-gradle= {id="android-gradle", version.ref="android-gradle"}
+kotlin-gradle={id="kotlin-gradle",version.ref="kotlin"}
+dokka={id="dokka",version.ref="dokka"}
+
+[bundles]

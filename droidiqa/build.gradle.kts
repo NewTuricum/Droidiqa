@@ -1,18 +1,18 @@
 plugins {
-    id 'com.android.library'
-    id 'kotlin-android'
-    id 'kotlin-kapt'
-    id 'org.jetbrains.dokka'
-    id 'maven-publish'
+    id("com.android.library")
+    kotlin("android")
+    kotlin("kapt")
+    id("org.jetbrains.dokka")
+    id("maven-publish")
 }
 
-def droidiqaVersion = "0.8.1"
+val droidiqaVersion = "0.8.1"
 
-def gitHubCredentials = rootProject.file("github.properties")
+val gitHubCredentials = rootProject.file("github.properties")
 if (gitHubCredentials.exists()) {
-    apply from: gitHubCredentials
+    apply(gitHubCredentials)
 } else {
-    ext.githubUser = "unknown"
+    extra["githubUser" = "unknown"
     ext.githubKey = "unknown"
 }
 
