@@ -1,0 +1,49 @@
+[versions]
+kotlin = "2.2.20-Beta1"
+core-ktx = "1.16.0"
+appcompat = "1.7.1"
+lifecycle = "2.9.2"
+room = "2.7.2"
+gson = "2.13.1"
+volley = "1.2.1"
+laksaj = "1.1.0-RELEASE"
+junit = "4.13.2"
+junit-ext = "1.2.1"
+
+# Plugin versions
+android-gradle = "8.11.1"
+kotlin-gradle = "2.2.0"
+dokka = "2.0.0"
+ksp = "2.2.0-2.0.2"
+
+[libraries]
+# Kotlin
+kotlin-stdlib = { group = "org.jetbrains.kotlin", name = "kotlin-stdlib", version.ref = "kotlin" }
+
+# AndroidX
+androidx-core = { group = "androidx.core", name = "core-ktx", version.ref = "core-ktx" }
+androidx-appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "appcompat" }
+androidx-lifecycle = { group = "androidx.lifecycle", name = "lifecycle-process", version.ref = "lifecycle" }
+androidx-lifecycle-livedata = { group = "androidx.lifecycle", name = "lifecycle-livedata-ktx", version.ref = "lifecycle" }
+
+# Room
+androidx-room-runtime = { group = "androidx.room", name = "room-runtime", version.ref = "room" }
+androidx-room-ktx = { group = "androidx.room", name = "room-ktx", version.ref = "room" }
+androidx-room-compiler = { group = "androidx.room", name = "room-compiler", version.ref = "room" }
+androidx-room-testing = { group = "androidx.room", name = "room-testing", version.ref = "room" }
+
+# Other dependencies
+gson = { group = "com.google.code.gson", name = "gson", version.ref = "gson" }
+volley = { group = "com.android.volley", name = "volley", version.ref = "volley" }
+laksaj = { group = "org.firestack", name = "laksaj", version.ref = "laksaj" }
+
+# Testing
+junit = { group = "junit", name = "junit", version.ref = "junit" }
+androidx-test-ext = { group = "androidx.test.ext", name = "junit", version.ref = "junit-ext" }
+
+[plugins]
+android-library = { id = "com.android.library", version.ref = "android-gradle" }
+kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin-gradle" }
+dokka = { id = "org.jetbrains.dokka", version.ref = "dokka" }
+ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
+room = { id = "androidx.room", version.ref = "room" }
