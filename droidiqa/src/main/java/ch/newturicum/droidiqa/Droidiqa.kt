@@ -6,21 +6,30 @@ import android.os.Looper
 import android.os.Message
 import android.util.Log
 import androidx.annotation.WorkerThread
-import androidx.lifecycle.*
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.LifecycleObserver
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.OnLifecycleEvent
+import androidx.lifecycle.map
 import androidx.room.RoomDatabase
 import androidx.sqlite.db.SupportSQLiteDatabase
 import ch.newturicum.droidiqa.Constants.DEFAULT_TRANSACTION_REFRESH_INTERVAL
 import ch.newturicum.droidiqa.Constants.MIN_BALANCE_REFRESH_INTERVAL
 import ch.newturicum.droidiqa.Constants.MIN_TRANSACTION_REFRESH_INTERVAL
 import ch.newturicum.droidiqa.database.ZilDroidDatabase
-import ch.newturicum.droidiqa.database.dao.*
 import ch.newturicum.droidiqa.database.dao.AccountContainer
 import ch.newturicum.droidiqa.database.dao.TokenContainer
 import ch.newturicum.droidiqa.database.dao.ZilAccountEntity
 import ch.newturicum.droidiqa.database.dao.ZilContactEntity
 import ch.newturicum.droidiqa.database.dao.ZilTokenEntity
 import ch.newturicum.droidiqa.database.dao.ZilWalletEntity
-import ch.newturicum.droidiqa.dto.*
+import ch.newturicum.droidiqa.dto.ZilAccount
+import ch.newturicum.droidiqa.dto.ZilContact
+import ch.newturicum.droidiqa.dto.ZilToken
+import ch.newturicum.droidiqa.dto.ZilTransaction
+import ch.newturicum.droidiqa.dto.ZilTransactionStatus
+import ch.newturicum.droidiqa.dto.ZilWallet
 import ch.newturicum.droidiqa.dto.response.ZilSmartContractCode
 import ch.newturicum.droidiqa.dto.response.ZilSmartContractInit
 import ch.newturicum.droidiqa.dto.response.asTokenEntity
@@ -31,7 +40,13 @@ import ch.newturicum.droidiqa.network.getChainId
 import ch.newturicum.droidiqa.network.response.getCode
 import ch.newturicum.droidiqa.network.response.getStatus
 import ch.newturicum.droidiqa.network.response.updateZilTransaction
-import ch.newturicum.droidiqa.repository.*
+import ch.newturicum.droidiqa.repository.AddTokenCallback
+import ch.newturicum.droidiqa.repository.DroidiqaRepository
+import ch.newturicum.droidiqa.repository.MinimumGasPriceCallback
+import ch.newturicum.droidiqa.repository.RefreshCallback
+import ch.newturicum.droidiqa.repository.SmartContractCodeCallback
+import ch.newturicum.droidiqa.repository.SmartContractInitCallback
+import ch.newturicum.droidiqa.repository.TransitionCallback
 import ch.newturicum.droidiqa.security.KeyEncoder
 import ch.newturicum.droidiqa.security.KeyEncoderImpl
 import ch.newturicum.droidiqa.transitions.Transition
@@ -42,6 +57,7 @@ import com.android.volley.toolbox.Volley
 import com.firestack.laksaj.crypto.KeyTools
 import com.firestack.laksaj.utils.Bech32
 import kotlinx.coroutines.runBlocking
+
 
 /**
  * The Client repository with access to the Zilliqa blockchain. It is recommended to instantiate this
@@ -666,22 +682,20 @@ class Droidiqa constructor (
 
     private fun setObservers() {
         walletEntity = zilWalletDao.getFor(activeNetwork)
-        accountsEntity = Transformations.map(zilWalletDao.getAccounts(activeNetwork)) {
+        accountsEntity = zilWalletDao.getAccounts(activeNetwork).map {
             it.entries
         }
 
-        observables.walletLiveData = Transformations.map(walletEntity) {
+        observables.walletLiveData = walletEntity.map {
             it.toZilWallet()
         }
-        observables.accountsLiveData =
-            Transformations.map(accountsEntity) {
-                it.map { zilAccountEntity -> zilAccountEntity.toZilAccount() }
-            }
-        observables.tokensLiveData =
-            Transformations.map(zilWalletDao.getTokens(activeNetwork)) {
-                it.entries.map { entry -> entry.toZilToken() }
-            }
-        observables.contacts = Transformations.map(zilContactDao.getAll()) {
+        observables.accountsLiveData = accountsEntity.map {
+            it.map { zilAccountEntity -> zilAccountEntity.toZilAccount() }
+        }
+        observables.tokensLiveData = zilWalletDao.getTokens(activeNetwork).map {
+            it.entries.map { entry -> entry.toZilToken() }
+        }
+        observables.contacts = zilContactDao.getAll().map {
             it.map { entry -> entry.toZilContact() }
         }
     }
