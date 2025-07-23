@@ -189,4 +189,5 @@ dependencies {
     testImplementation(libs.androidx.room.testing)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.test.ext)
+    testImplementation(kotlin("test"))
 }
