@@ -16,4 +16,10 @@ data class ZilContact(
     override fun compareTo(other: ZilContact): Int {
         return name.compareTo(other.name)
     }
+
+    override fun hashCode(): Int {
+        var result = address.hashCode()
+        result = 31 * result + name.hashCode()
+        return result
+    }
 }

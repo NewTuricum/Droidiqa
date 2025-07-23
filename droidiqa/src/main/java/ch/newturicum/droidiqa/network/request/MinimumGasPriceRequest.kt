@@ -6,9 +6,9 @@ import ch.newturicum.droidiqa.network.getRoot
 import ch.newturicum.droidiqa.network.response.MinimumGasPrice
 import com.android.volley.Response
 import com.android.volley.toolbox.JsonObjectRequest
-import com.google.gson.Gson
+import kotlinx.serialization.encodeToString
+import kotlinx.serialization.json.Json
 import org.json.JSONObject
-
 
 internal class MinimumGasPriceRequest(
     network: ZilNetwork,
@@ -18,7 +18,7 @@ internal class MinimumGasPriceRequest(
     Method.POST,
     network.getRoot(),
     JSONObject(
-        Gson().toJson(
+        Json.encodeToString(
             RequestData(
                 method = ZILLIQA.METHOD.MIN_GAS_PRICE,
                 params = arrayOf()
@@ -27,12 +27,10 @@ internal class MinimumGasPriceRequest(
     ),
     Response.Listener { response ->
         responseListener.onResponse(
-            Gson().fromJson(
-                response.toString(),
-                MinimumGasPrice::class.java
-            )
+            Json.decodeFromString<MinimumGasPrice>(response.toString())
         )
     },
     Response.ErrorListener { error ->
         errorListener.onErrorResponse(error)
-    })
+    }
+)

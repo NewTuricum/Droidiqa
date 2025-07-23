@@ -4,9 +4,9 @@ import ch.newturicum.droidiqa.network.ZILLIQA
 import ch.newturicum.droidiqa.network.response.SmartContractState
 import com.android.volley.Response
 import com.android.volley.toolbox.JsonObjectRequest
-import com.google.gson.Gson
+import kotlinx.serialization.encodeToString
+import kotlinx.serialization.json.Json
 import org.json.JSONObject
-
 
 internal class SmartContractStateRequest(
     apiRoot: String,
@@ -17,7 +17,7 @@ internal class SmartContractStateRequest(
     Method.POST,
     apiRoot,
     JSONObject(
-        Gson().toJson(
+        Json.encodeToString(
             RequestData(
                 method = ZILLIQA.METHOD.SMARTCONTRACT_STATE,
                 params = contractAddresses.toTypedArray()
@@ -26,12 +26,10 @@ internal class SmartContractStateRequest(
     ),
     Response.Listener { response ->
         responseListener.onResponse(
-            Gson().fromJson(
-                response.toString(),
-                SmartContractState::class.java
-            )
+            Json.decodeFromString<SmartContractState>(response.toString())
         )
     },
     Response.ErrorListener { error ->
         errorListener.onErrorResponse(error)
-    })
+    }
+)

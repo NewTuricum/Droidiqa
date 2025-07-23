@@ -7,11 +7,14 @@ import ch.newturicum.droidiqa.dto.ZilAccount
 import ch.newturicum.droidiqa.dto.ZilWallet
 import ch.newturicum.droidiqa.network.ZilNetwork
 import ch.newturicum.droidiqa.util.DroidiqaUtils
+import kotlinx.serialization.Serializable
 
+@Serializable
 internal data class AccountContainer(
     var entries: MutableList<ZilAccountEntity>
 )
 
+@Serializable
 internal data class TokenContainer(
     var entries: MutableList<ZilTokenEntity>
 )

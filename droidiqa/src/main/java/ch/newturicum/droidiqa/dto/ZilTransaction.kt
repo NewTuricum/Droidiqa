@@ -1,29 +1,32 @@
 package ch.newturicum.droidiqa.dto
 
-import com.google.gson.annotations.SerializedName
-import java.io.Serializable
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
 
+@Serializable
 enum class ZilTransactionStatus {
     PENDING,
     FAILED,
     COMPLETED
 }
 
+@Serializable
 enum class ZilTransactionType {
     ZIL_TRANSFER,
     ZRC2_TRANSFER,
     CALL_TRANSITION
 }
 
+@Serializable
 data class ZilTransaction(
-    @SerializedName("id")
+    @SerialName("id")
     val hash: String,
     var status: ZilTransactionStatus,
     var timestamp: Long,
     var amount: Long = 0,
     var contract: String? = null,
     var receiver: String? = null
-) : Serializable, Comparable<ZilTransaction> {
+) : Comparable<ZilTransaction> {
     override fun compareTo(other: ZilTransaction): Int {
         return hash.compareTo(other.hash)
     }
@@ -33,6 +36,10 @@ data class ZilTransaction(
             return hash == other.hash
         }
         return false
+    }
+
+    override fun hashCode(): Int {
+        return hash.hashCode()
     }
 }
 

@@ -10,13 +10,16 @@ import ch.newturicum.droidiqa.util.DroidiqaUtils
 import com.firestack.laksaj.crypto.Schnorr
 import com.firestack.laksaj.transaction.Transaction
 import com.firestack.laksaj.utils.Bech32
+import kotlinx.serialization.Serializable
 import org.web3j.crypto.ECKeyPair
 import java.io.IOException
 import java.math.BigInteger
 import java.security.NoSuchAlgorithmException
-import java.util.*
+import java.util.Locale
+import java.util.Objects
 
 @Entity
+@Serializable
 internal data class ZilAccountEntity(
     @PrimaryKey val encryptedPrivateKey: String,
     @ColumnInfo(name = "name") val name: String,

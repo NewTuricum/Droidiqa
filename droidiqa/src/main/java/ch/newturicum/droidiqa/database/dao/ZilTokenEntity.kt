@@ -7,9 +7,11 @@ import ch.newturicum.droidiqa.dto.ZilToken
 import ch.newturicum.droidiqa.util.DroidiqaUtils
 import ch.newturicum.droidiqa.util.fromBech32Address
 import ch.newturicum.droidiqa.util.hexPrefixed
-import java.util.*
+import kotlinx.serialization.Serializable
+import java.util.Locale
 
 @Entity
+@Serializable
 internal data class ZilTokenEntity(
     @PrimaryKey var contractAddress: String,
     @ColumnInfo(name = "name") var name: String,

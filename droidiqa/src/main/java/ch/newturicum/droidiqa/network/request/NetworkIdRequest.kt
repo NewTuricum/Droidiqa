@@ -6,9 +6,9 @@ import ch.newturicum.droidiqa.network.getRoot
 import ch.newturicum.droidiqa.network.response.NetworkId
 import com.android.volley.Response
 import com.android.volley.toolbox.JsonObjectRequest
-import com.google.gson.Gson
+import kotlinx.serialization.encodeToString
+import kotlinx.serialization.json.Json
 import org.json.JSONObject
-
 
 internal class NetworkIdRequest(
     network: ZilNetwork,
@@ -18,7 +18,7 @@ internal class NetworkIdRequest(
     Method.POST,
     network.getRoot(),
     JSONObject(
-        Gson().toJson(
+        Json.encodeToString(
             RequestData(
                 method = ZILLIQA.METHOD.NETWORK_ID,
                 params = arrayOf()
@@ -27,12 +27,10 @@ internal class NetworkIdRequest(
     ),
     Response.Listener { response ->
         responseListener.onResponse(
-            Gson().fromJson(
-                response.toString(),
-                NetworkId::class.java
-            )
+            Json.decodeFromString<NetworkId>(response.toString())
         )
     },
     Response.ErrorListener { error ->
         errorListener.onErrorResponse(error)
-    })
+    }
+)

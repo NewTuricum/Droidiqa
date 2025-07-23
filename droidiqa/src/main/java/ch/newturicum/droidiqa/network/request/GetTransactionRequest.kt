@@ -4,9 +4,9 @@ import ch.newturicum.droidiqa.network.ZILLIQA
 import ch.newturicum.droidiqa.network.response.GetTransactionResponse
 import com.android.volley.Response
 import com.android.volley.toolbox.JsonObjectRequest
-import com.google.gson.Gson
+import kotlinx.serialization.encodeToString
+import kotlinx.serialization.json.Json
 import org.json.JSONObject
-
 
 internal class GetTransactionRequest(
     apiRoot: String,
@@ -17,7 +17,7 @@ internal class GetTransactionRequest(
     Method.POST,
     apiRoot,
     JSONObject(
-        Gson().toJson(
+        Json.encodeToString(
             RequestData(
                 method = ZILLIQA.METHOD.GET_TRANSACTION,
                 params = arrayOf(transactionId)
@@ -26,12 +26,10 @@ internal class GetTransactionRequest(
     ),
     Response.Listener { response ->
         responseListener?.onResponse(
-            Gson().fromJson(
-                response.toString(),
-                GetTransactionResponse::class.java
-            )
+            Json.decodeFromString<GetTransactionResponse>(response.toString())
         )
     },
     Response.ErrorListener { error ->
         errorListener?.onErrorResponse(error)
-    })
+    }
+)

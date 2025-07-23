@@ -1,17 +1,15 @@
 package ch.newturicum.droidiqa.transitions
 
 import ch.newturicum.droidiqa.network.request.TransactionData
-import com.google.gson.Gson
+import kotlinx.serialization.Serializable
 
-/**
- * Created by dzorn on 08.06.21.
- */
-open class Transition(private val name: String) {
-    private val params = mutableListOf<TransitionParameter>()
-    private val gson = Gson()
-
-    fun addParameter(name: String, value: Any) {
-        addParameter(TransitionParameter(vname = name, value = value))
+@Serializable
+open class Transition(
+    val name: String,
+    val params: MutableList<TransitionParameter> = mutableListOf()
+) {
+    fun addParameter(name: String, value: Any?) {
+        addParameter(TransitionParameter.from(name, value))
     }
 
     fun addParameter(param: TransitionParameter) {
@@ -25,11 +23,10 @@ open class Transition(private val name: String) {
     }
 
     fun addParameters(params: Array<TransitionParameter>) {
-        params.map { it.vname }.let { knownParams ->
-            for (param in params) {
-                if (!knownParams.contains(param.vname)) {
-                    this.params.add(param)
-                }
+        val knownParams = this.params.map { it.vname }
+        for (param in params) {
+            if (!knownParams.contains(param.vname)) {
+                this.params.add(param)
             }
         }
     }

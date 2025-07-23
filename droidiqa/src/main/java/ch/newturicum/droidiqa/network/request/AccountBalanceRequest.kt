@@ -4,9 +4,9 @@ import ch.newturicum.droidiqa.network.ZILLIQA
 import ch.newturicum.droidiqa.network.response.AccountBalance
 import com.android.volley.Response
 import com.android.volley.toolbox.JsonObjectRequest
-import com.google.gson.Gson
+import kotlinx.serialization.encodeToString
+import kotlinx.serialization.json.Json
 import org.json.JSONObject
-
 
 internal class AccountBalanceRequest(
     apiRoot: String,
@@ -17,7 +17,7 @@ internal class AccountBalanceRequest(
     Method.POST,
     apiRoot,
     JSONObject(
-        Gson().toJson(
+        Json.encodeToString(
             RequestData(
                 method = ZILLIQA.METHOD.ACCOUNT_BALANCE,
                 params = arrayOf(accountAddress)
@@ -26,12 +26,10 @@ internal class AccountBalanceRequest(
     ),
     Response.Listener { response ->
         responseListener.onResponse(
-            Gson().fromJson(
-                response.toString(),
-                AccountBalance::class.java
-            )
+            Json.decodeFromString<AccountBalance>(response.toString())
         )
     },
     Response.ErrorListener { error ->
         errorListener.onErrorResponse(error)
-    })
+    }
+)

@@ -1,12 +1,13 @@
 package ch.newturicum.droidiqa.dto
 
-import java.io.Serializable
+import kotlinx.serialization.Serializable
 
+@Serializable
 data class ZilAccount(
     val name: String,
     val address: String,
     val zilBalance: Double
-) : Comparable<ZilAccount>, Serializable {
+) : Comparable<ZilAccount> {
     override fun compareTo(other: ZilAccount): Int {
         return name.compareTo(other.name)
     }
@@ -16,5 +17,9 @@ data class ZilAccount(
             return address == other.address
         }
         return false
+    }
+
+    override fun hashCode(): Int {
+        return address.hashCode()
     }
 }

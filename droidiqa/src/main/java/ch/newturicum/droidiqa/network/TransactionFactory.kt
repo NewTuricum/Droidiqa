@@ -10,11 +10,13 @@ import ch.newturicum.droidiqa.transitions.Transition
 import ch.newturicum.droidiqa.transitions.TransitionParameter
 import ch.newturicum.droidiqa.util.DroidiqaUtils
 import ch.newturicum.droidiqa.util.extensions.pack
-import com.google.gson.Gson
+import kotlinx.serialization.encodeToString
+import kotlinx.serialization.json.Json
 
 internal class TransactionFactory {
 
     companion object {
+        private val json = Json { ignoreUnknownKeys = true }
 
         fun zilliqaTransfer(
             networkId: Int,
@@ -91,7 +93,7 @@ internal class TransactionFactory {
             data: TransactionData?,
             keyEncoder: KeyEncoder
         ): SingleTransaction {
-            val theData = if (data == null) "" else Gson().toJson(data)
+            val theData = if (data == null) "" else json.encodeToString(data)
             val transaction =
                 com.firestack.laksaj.transaction.Transaction.builder()
                     .amount(DroidiqaUtils.zilToQa(amount).toString())

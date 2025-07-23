@@ -4,6 +4,7 @@ plugins {
     alias(libs.plugins.dokka)
     alias(libs.plugins.ksp)
     alias(libs.plugins.room)
+    alias(libs.plugins.kotlinx.serialization)
     id("maven-publish")
 }
 
@@ -182,9 +183,11 @@ dependencies {
     implementation(libs.androidx.lifecycle.livedata)
 
     ksp(libs.androidx.room.compiler)
-    implementation(libs.gson)
     implementation(libs.volley)
     implementation(libs.laksaj)
+
+    // Kotlin serialization
+    implementation(libs.kotlinx.serialization.json)
 
     testImplementation(libs.androidx.room.testing)
     testImplementation(libs.junit)

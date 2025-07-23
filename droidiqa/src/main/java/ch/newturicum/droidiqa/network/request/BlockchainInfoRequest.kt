@@ -4,9 +4,9 @@ import ch.newturicum.droidiqa.network.ZILLIQA
 import ch.newturicum.droidiqa.network.response.BlockchainInfo
 import com.android.volley.Response
 import com.android.volley.toolbox.JsonObjectRequest
-import com.google.gson.Gson
+import kotlinx.serialization.encodeToString
+import kotlinx.serialization.json.Json
 import org.json.JSONObject
-
 
 internal class BlockchainInfoRequest(
     apiRoot: String,
@@ -15,16 +15,15 @@ internal class BlockchainInfoRequest(
 ) : JsonObjectRequest(
     Method.POST,
     apiRoot,
-    JSONObject(Gson().toJson(RequestData(method = ZILLIQA.METHOD.BLOCKCHAIN_INFO))),
+    JSONObject(
+        Json.encodeToString(RequestData(method = ZILLIQA.METHOD.BLOCKCHAIN_INFO))
+    ),
     Response.Listener { response ->
         responseListener.onResponse(
-            Gson().fromJson(
-                response.toString(),
-                BlockchainInfo::class.java
-            )
+            Json.decodeFromString<BlockchainInfo>(response.toString())
         )
     },
     Response.ErrorListener { error ->
         errorListener.onErrorResponse(error)
-    }) {
-}
+    }
+)

@@ -5,13 +5,14 @@ import ch.newturicum.droidiqa.database.dao.AccountContainer
 import ch.newturicum.droidiqa.database.dao.TokenContainer
 import ch.newturicum.droidiqa.dto.ZilTransaction
 import ch.newturicum.droidiqa.network.ZilNetwork
-import com.google.gson.Gson
-import com.google.gson.reflect.TypeToken
-import java.lang.reflect.Type
+import kotlinx.serialization.builtins.ListSerializer
+import kotlinx.serialization.builtins.MapSerializer
+import kotlinx.serialization.builtins.serializer
+import kotlinx.serialization.json.Json
 
 internal class Converters {
 
-    private val gson = Gson()
+    private val json = Json { ignoreUnknownKeys = true }
 
     @TypeConverter
     fun fromStoredList(value: String?): List<String> {
@@ -25,7 +26,7 @@ internal class Converters {
 
     @TypeConverter
     fun fromStoredZilNetwork(value: String?): ZilNetwork? {
-        return if (value == null) null else ZilNetwork.valueOf(value)
+        return value?.let { ZilNetwork.valueOf(it) }
     }
 
     @TypeConverter
@@ -35,74 +36,91 @@ internal class Converters {
 
     @TypeConverter
     fun fromStoredStringMap(value: String?): Map<String, String> {
-        value?.let {
-            val type: Type = object : TypeToken<Map<String, String>>() {}.type
-            return gson.fromJson(value, type)
-        }
-        return emptyMap()
+        return if (value != null) {
+            try {
+                json.decodeFromString(
+                    MapSerializer(String.serializer(), String.serializer()),
+                    value
+                )
+            } catch (e: Exception) {
+                emptyMap()
+            }
+        } else emptyMap()
     }
 
     @TypeConverter
     fun toStoredStringMap(value: Map<String, String>?): String? {
-        value?.let {
-            return gson.toJson(it)
+        return value?.let {
+            json.encodeToString(
+                MapSerializer(
+                    String.serializer(),
+                    String.serializer()
+                ), it
+            )
         }
-        return null
     }
 
     @TypeConverter
     fun fromStoredZilAccountList(value: String?): AccountContainer {
-        value?.let {
-            val type: Type = object : TypeToken<AccountContainer>() {}.type
-            return gson.fromJson(value, type)
-        }
-        return AccountContainer(mutableListOf())
+        return if (value != null) {
+            try {
+                json.decodeFromString(AccountContainer.serializer(), value)
+            } catch (e: Exception) {
+                AccountContainer(mutableListOf())
+            }
+        } else AccountContainer(mutableListOf())
     }
 
     @TypeConverter
     fun toStoredZilAccountList(value: AccountContainer?): String? {
-        value?.let {
-            return gson.toJson(it)
-        }
-        return null
+        return value?.let { json.encodeToString(AccountContainer.serializer(), it) }
     }
 
     @TypeConverter
     fun fromStoredZilTokenList(value: String?): TokenContainer {
-        value?.let {
-            val type: Type = object : TypeToken<TokenContainer>() {}.type
-            return gson.fromJson(value, type)
-        }
-        return TokenContainer(mutableListOf())
+        return if (value != null) {
+            try {
+                json.decodeFromString(TokenContainer.serializer(), value)
+            } catch (e: Exception) {
+                TokenContainer(mutableListOf())
+            }
+        } else TokenContainer(mutableListOf())
     }
 
     @TypeConverter
     fun toStoredZilTokenList(value: TokenContainer?): String? {
-        value?.let {
-            return gson.toJson(it)
-        }
-        return null
+        return value?.let { json.encodeToString(TokenContainer.serializer(), it) }
     }
 
     @TypeConverter
     fun fromStoredTransaction(value: String?): ZilTransaction? {
-        val type: Type = object : TypeToken<ZilTransaction>() {}.type
-        return if (value == null) null else gson.fromJson(value, type)
+        return value?.let {
+            try {
+                json.decodeFromString(ZilTransaction.serializer(), it)
+            } catch (e: Exception) {
+                null
+            }
+        }
     }
 
     @TypeConverter
     fun toStoredTransaction(value: ZilTransaction?): String? {
-        return if (value == null) null else gson.toJson(value)
+        return value?.let { json.encodeToString(ZilTransaction.serializer(), it) }
     }
 
     @TypeConverter
     fun fromStoredTransactionList(value: String?): List<ZilTransaction> {
-        val type: Type = object : TypeToken<List<ZilTransaction>>() {}.type
-        return if (value == null) emptyList() else gson.fromJson(value, type)
+        return if (value != null) {
+            try {
+                json.decodeFromString(ListSerializer(ZilTransaction.serializer()), value)
+            } catch (e: Exception) {
+                emptyList()
+            }
+        } else emptyList()
     }
 
     @TypeConverter
     fun toStoredTransactionList(value: List<ZilTransaction>?): String? {
-        return if (value == null) null else gson.toJson(value)
+        return value?.let { json.encodeToString(ListSerializer(ZilTransaction.serializer()), it) }
     }
 }

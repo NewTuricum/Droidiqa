@@ -2,12 +2,14 @@ package ch.newturicum.droidiqa
 
 import ch.newturicum.droidiqa.dto.ZilTransaction
 import ch.newturicum.droidiqa.dto.ZilTransactionStatus
-import com.google.gson.Gson
+import kotlinx.serialization.encodeToString
+import kotlinx.serialization.json.Json
 import org.junit.Test
 import kotlin.test.assertEquals
 
 class ZilTransactionSerializationTest {
-    private val gson = Gson()
+
+    private val jsonSerializer = Json { encodeDefaults = true; ignoreUnknownKeys = false }
 
     @Test
     fun `serializes ZilTransaction to expected JSON`() {
@@ -21,7 +23,7 @@ class ZilTransactionSerializationTest {
         )
         val expectedJson =
             """{"id":"0x123","status":"COMPLETED","timestamp":1620000000,"amount":100000,"contract":"contract1","receiver":"zil1testreceiver"}"""
-        val actualJson = gson.toJson(tx)
+        val actualJson = jsonSerializer.encodeToString(tx)
         assertEquals(expectedJson, actualJson)
     }
 
@@ -37,7 +39,7 @@ class ZilTransactionSerializationTest {
             contract = null,
             receiver = "zil1abc"
         )
-        val actual = gson.fromJson(json, ZilTransaction::class.java)
+        val actual = jsonSerializer.decodeFromString<ZilTransaction>(json)
         assertEquals(expected, actual)
     }
 }
